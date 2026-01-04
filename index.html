@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Miguel Tomás | Estratega de Marketing & Tech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1E1E1E;
+            --primary-color: #2ECC71;
+            --text-main: #F8F9FA;
+            --text-secondary: #B0B0B0;
+            --accent-glow: rgba(46, 204, 113, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 2rem;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        nav {
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo { font-weight: 800; color: var(--primary-color); font-size: 1.4rem; letter-spacing: -1px; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; margin-left: 2rem; font-size: 0.85rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-color); }
+
+        /* --- HERO SECTION --- */
+        header {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-layout {
+            max-width: 850px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .hero-content {
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .kicker { 
+            color: var(--primary-color); 
+            text-transform: uppercase; 
+            letter-spacing: 5px; 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin: 0; line-height: 1.1; font-weight: 800; letter-spacing: -2px; }
+        .highlight { color: var(--primary-color); }
+        .subtitle { 
+            font-size: clamp(1.1rem, 3vw, 1.35rem); 
+            color: var(--text-secondary); 
+            max-width: 700px; 
+            margin: 2.5rem auto; 
+            font-weight: 300;
+        }
+
+        /* --- BOTONES --- */
+        .cta-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        .btn-primary { background: var(--primary-color); color: #000; }
+        .btn-primary:hover { background: #27ae60; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
+        
+        .btn-secondary { border: 1px solid #333; color: var(--text-main); background: transparent; }
+        .btn-secondary:hover { border-color: var(--primary-color); background: rgba(46, 204, 113, 0.05); transform: translateY(-3px); }
+
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.03);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-main);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* --- SECCIONES --- */
+        section { padding: 6rem 0; }
+        h2 { font-size: 1.8rem; margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+        h2::after { content: ""; height: 1px; flex: 1; background: linear-gradient(to right, #333, transparent); }
+
+        /* --- EXPERIENCIA LABORAL --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            height: 100%;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.65rem;
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            background: #252525;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card .icon { 
+            width: 40px; 
+            height: 40px; 
+            background: rgba(46, 204, 113, 0.1); 
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .card h3 { margin: 0 0 1rem 0; font-size: 1.3rem; }
+        .card p { color: var(--text-secondary); margin: 0; font-size: 0.9rem; line-height: 1.6; }
+
+        /* --- FORMACIÓN ACADÉMICA --- */
+        .edu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .edu-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .edu-link:hover {
+            transform: translateX(10px);
+        }
+
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary-color);
+            transition: background 0.3s ease;
+        }
+
+        .edu-link:hover .edu-item {
+            background: rgba(46, 204, 113, 0.05);
+        }
+
+        .edu-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-main); }
+        .edu-info p { margin: 0.2rem 0 0 0; font-size: 0.85rem; color: var(--text-secondary); }
+        .edu-year { font-weight: 600; color: var(--primary-color); font-size: 0.8rem; white-space: nowrap; margin-left: 1rem; }
+
+        /* --- SKILLS --- */
+        .skills-category {
+            margin-bottom: 2rem;
+        }
+        
+        .skills-category h3 {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+        }
+
+        .skills-wrap { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+        
+        .skill-pill {
+            background: #181818;
+            border: 1px solid #2A2A2A;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            transition: 0.3s;
+        }
+        .skill-pill:hover { border-color: var(--primary-color); color: var(--text-main); }
+        .skill-pill.highlight-pill { border-color: #444; color: var(--text-main); background: rgba(46, 204, 113, 0.05); }
+
+        /* --- CONTACT MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal-close:hover { color: var(--text-main); }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            background: #252525;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+            background: #2a2a2a;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 5rem 0;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .footer-email {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            nav .nav-links { display: none; }
+            footer { flex-direction: column; gap: 2rem; text-align: center; }
+            .edu-item { flex-direction: column; }
+            .edu-year { margin: 0.5rem 0 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <div class="logo">JUAN MIGUEL.</div>
+        <div class="nav-links">
+            <a href="#experiencia">Impacto</a>
+            <a href="#formacion">Formación</a>
+            <a href="#skills">Habilidades</a>
+            <a href="#contacto">Contacto</a>
+        </div>
+    </nav>
+
+    <header>
+        <div class="hero-layout">
+            <div class="hero-content">
+                <span class="kicker">Estratega de Crecimiento & Tech</span>
+                <h1>Liderazgo Humano, <br><span class="highlight">Eficiencia Tecnológica.</span></h1>
+                <p class="subtitle">Especialista en Marketing Digital y Co-fundador de 10Tacle.app. Optimizo negocios mediante la intersección de IA y gestión operativa de alto nivel.</p>
+                
+                <div class="cta-group">
+                    <button onclick="toggleModal()" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        Hablemos
+                    </button>
+                    <!-- Enlace de descarga actualizado a Google Drive -->
+                    <a href="https://drive.google.com/file/d/1Trp9CW5ZTKWlRbh7Dq-jUnxmI3AdjBGM/view?usp=drivesdk" target="_blank" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Descargar CV
+                    </a>
+                    <a href="#experiencia" class="btn btn-outline">Ver Proyectos</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal de Contacto -->
+    <div id="contactModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleModal()">&times;</button>
+            <h2 style="margin-top: 0; border: none; font-size: 1.5rem; margin-bottom: 0.5rem;">Hablemos</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem;">Cuéntame qué tienes en mente y me pondré en contacto contigo pronto.</p>
+            
+            <form id="contactForm" class="modal-form">
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Asunto</label>
+                    <input type="text" id="subject" placeholder="Ej: Consultoría, Nuevo Proyecto" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje</label>
+                    <textarea id="message" rows="4" placeholder="¿Cómo puedo ayudarte?" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Enviar mensaje</button>
+            </form>
+        </div>
+    </div>
+
+    <section id="experiencia">
+        <h2>Experiencia Laboral</h2>
+        <div class="grid">
+            <a href="https://e-digital.es/" target="_blank" rel="noopener noreferrer" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+                    </div>
+                    <h3>E-Digital Murcia</h3>
+                    <p>Estrategia de Marketing Digital y análisis de rendimiento (KPIs). Enfoque en maximizar el ROI mediante campañas de eCommerce y analítica avanzada. <span style="color: var(--primary-color); display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 600;">Visitar sitio →</span></p>
+                </div>
+            </a>
+
+            <div class="card">
+                <div class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <h3>Sarao Café SL</h3>
+                <p>Encargado de Personal y Operaciones. Liderazgo de un equipo de 11 personas, optimización de operativa diaria de alto volumen y gestión de fidelización.</p>
+            </div>
+
+            <div class="card">
+                <span class="status-badge">En Desarrollo</span>
+                <div class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>10Tacle.app</h3>
+                <p>Co-fundador y desarrollador de módulos (TacleTime, TacleShift). Plataforma integral de gestión empresarial con algoritmos de IA para cuadrantes laborales y control horario.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="formacion">
+        <h2>Formación Académica</h2>
+        <div class="edu-grid">
+            <a href="https://ecommaster.es/" target="_blank" rel="noopener noreferrer" class="edu-link">
+                <div class="edu-item">
+                    <div class="edu-info">
+                        <h3>Máster en Ecommerce y Marketing Digital</h3>
+                        <p>E-commerce Online</p>
+                    </div>
+                    <div class="edu-year">2020 – 2021</div>
+                </div>
+            </a>
+
+            <a href="https://colegiocei.es/" target="_blank" rel="noopener noreferrer" class="edu-link">
+                <div class="edu-item">
+                    <div class="edu-info">
+                        <h3>Grado Superior en Marketing y Publicidad</h3>
+                        <p>CEI, Murcia</p>
+                    </div>
+                    <div class="edu-year">2018 – 2020</div>
+                </div>
+            </a>
+
+            <div class="edu-item">
+                <div class="edu-info">
+                    <h3>Curso de Formación Audiovisual</h3>
+                    <p>Atresmedia, Madrid</p>
+                </div>
+                <div class="edu-year">2017 – 2018</div>
+            </div>
+
+            <a href="https://www.iesinfantaelena.es/" target="_blank" rel="noopener noreferrer" class="edu-link">
+                <div class="edu-item">
+                    <div class="edu-info">
+                        <h3>Bachillerato de Ciencias</h3>
+                        <p>IES Infanta Elena, Jumilla</p>
+                    </div>
+                    <div class="edu-year">2015 – 2017</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Dominio Técnico & Skills</h2>
+        
+        <div class="skills-category">
+            <h3>IA & Backend</h3>
+            <div class="skills-wrap">
+                <div class="skill-pill">OpenAI (ChatGPT y API)</div>
+                <div class="skill-pill">Google AI Studio</div>
+                <div class="skill-pill">Firebase</div>
+                <div class="skill-pill">Automations (Make, n8n, Power Apps)</div>
+                <div class="skill-pill">Botpress</div>
+            </div>
+        </div>
+
+        <div class="skills-category">
+            <h3>Web y Diseño</h3>
+            <div class="skills-wrap">
+                <div class="skill-pill">Wordpress</div>
+                <div class="skill-pill">HTML 5 + CSS</div>
+                <div class="skill-pill">GAMMA</div>
+                <div class="skill-pill">Canva</div>
+                <div class="skill-pill">Illustrator</div>
+                <div class="skill-pill">Adobe After Effects</div>
+            </div>
+        </div>
+
+        <div class="skills-category">
+            <h3>Ofimática & Otros</h3>
+            <div class="skills-wrap">
+                <div class="skill-pill highlight-pill">Carnet de Conducir B</div>
+                <div class="skill-pill highlight-pill">Inglés (B1)</div>
+                <div class="skill-pill">Office 365</div>
+                <div class="skill-pill">Google Workspace</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <div class="contact-content" style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 20px;">
+            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">¿Tienes un desafío para mí?</p>
+            <h3 style="margin-top: 0; font-size: 2rem;">Impulsemos tu próximo paso</h3>
+            <a href="mailto:juanmtb9@gmail.com" class="footer-email" style="font-size: 1.5rem; color: var(--primary-color);">juanmtb9@gmail.com</a>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 1rem;">Jumilla / Remoto</p>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <strong>Juan Miguel Tomás Bernal</strong><br>
+            Especialista en Marketing Digital & Tech<br>
+            <a href="mailto:juanmtb9@gmail.com" class="footer-email">juanmtb9@gmail.com</a>
+        </div>
+        <div style="text-align: right;">
+            © 2026 • Disponible para nuevos retos
+        </div>
+    </footer>
+</div>
+
+<script>
+    const modal = document.getElementById('contactModal');
+    const contactForm = document.getElementById('contactForm');
+
+    function toggleModal() {
+        modal.classList.toggle('active');
+        document.body.classList.toggle('modal-open');
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) toggleModal();
+    });
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+        const emailTo = "juanmtb9@gmail.com";
+
+        const mailtoLink = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Hola Juan Miguel,\n\nMi nombre es " + name + ".\n\n" + message)}`;
+        
+        window.location.href = mailtoLink;
+        
+        setTimeout(() => {
+            toggleModal();
+            contactForm.reset();
+        }, 500);
+    });
+</script>
+
+</body>
+</html>
