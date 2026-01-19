@@ -433,6 +433,11 @@
                     <label for="name">Nombre</label>
                     <input type="text" id="name" placeholder="Tu nombre" required>
                 </div>
+                <!-- Nuevo campo de contacto -->
+                <div class="form-group">
+                    <label for="contactInfo">Contacto (Email o Teléfono)</label>
+                    <input type="text" id="contactInfo" placeholder="ejemplo@email.com o 600 000 000" required>
+                </div>
                 <div class="form-group">
                     <label for="subject">Asunto</label>
                     <input type="text" id="subject" placeholder="Ej: Consultoría, Nuevo Proyecto" required>
@@ -602,11 +607,13 @@
         e.preventDefault();
         
         const name = document.getElementById('name').value;
+        const contactInfo = document.getElementById('contactInfo').value; // Capturamos el nuevo campo
         const subject = document.getElementById('subject').value;
         const message = document.getElementById('message').value;
         const emailTo = "juanmtb9@gmail.com";
 
-        const mailtoLink = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Hola Juan Miguel,\n\nMi nombre es " + name + ".\n\n" + message)}`;
+        // Incluimos la info de contacto en el cuerpo del mensaje
+        const mailtoLink = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Hola Juan Miguel,\n\nMi nombre es " + name + ".\nMi contacto es: " + contactInfo + "\n\n" + message)}`;
         
         window.location.href = mailtoLink;
         
