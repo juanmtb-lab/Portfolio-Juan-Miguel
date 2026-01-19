@@ -589,11 +589,9 @@
         </div>
     </footer>
 </div>
-
 <script>
     const modal = document.getElementById('contactModal');
     const contactForm = document.getElementById('contactForm');
-    const submitBtn = document.getElementById('submitBtn');
 
     function toggleModal() {
         modal.classList.toggle('active');
@@ -604,12 +602,13 @@
         if (e.target === modal) toggleModal();
     });
 
-    // INTEGRACIÓN CON N8N
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Estado de carga en el botón
+        // Seleccionamos el botón correctamente ahora que tiene ID
+        const submitBtn = document.getElementById('submitBtn');
         const originalBtnText = submitBtn.innerText;
+        
         submitBtn.innerText = "Enviando...";
         submitBtn.disabled = true;
 
@@ -622,8 +621,7 @@
             fecha: new Date().toLocaleString()
         };
 
-        // Tu URL de n8n (He codificado el espacio como %20)
-        const webhookURL = "https://n8n-n8n.qgofek.easypanel.host/webhook/Contacto Portfolio";
+        const webhookURL = "https://n8n-n8n.qgofek.easypanel.host/webhook/Contacto%20Portfolio";
 
         try {
             const response = await fetch(webhookURL, {
@@ -631,6 +629,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                mode: 'cors', // Añadimos modo cors explícito
                 body: JSON.stringify(formData)
             });
 
@@ -642,19 +641,17 @@
                 throw new Error("Error en el servidor");
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("Vaya, parece que algo ha fallado. Por favor, inténtalo de nuevo o escríbeme directamente a juanmtb9@gmail.com");
+            console.error("Error detallado:", error);
+            alert("Vaya, parece que algo ha fallado. Por favor, escríbeme directamente a juanmtb9@gmail.com");
         } finally {
-            // Restaurar botón
             submitBtn.innerText = originalBtnText;
             submitBtn.disabled = false;
         }
     });
 </script>
-
-
 </body>
 </html>
+
 
 
 
