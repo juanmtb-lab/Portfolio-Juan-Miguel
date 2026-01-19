@@ -593,6 +593,7 @@
 <script>
     const modal = document.getElementById('contactModal');
     const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
 
     function toggleModal() {
         modal.classList.toggle('active');
@@ -603,26 +604,55 @@
         if (e.target === modal) toggleModal();
     });
 
-    contactForm.addEventListener('submit', (e) => {
+    // INTEGRACIÓN CON N8N
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const name = document.getElementById('name').value;
-        const contactInfo = document.getElementById('contactInfo').value; // Capturamos el nuevo campo
-        const subject = document.getElementById('subject').value;
-        const message = document.getElementById('message').value;
-        const emailTo = "juanmtb9@gmail.com";
+        // Estado de carga en el botón
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = "Enviando...";
+        submitBtn.disabled = true;
 
-        // Incluimos la info de contacto en el cuerpo del mensaje
-        const mailtoLink = `mailto:${emailTo}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Hola Juan Miguel,\n\nMi nombre es " + name + ".\nMi contacto es: " + contactInfo + "\n\n" + message)}`;
-        
-        window.location.href = mailtoLink;
-        
-        setTimeout(() => {
-            toggleModal();
-            contactForm.reset();
-        }, 500);
+        const formData = {
+            nombre: document.getElementById('name').value,
+            contacto: document.getElementById('contactInfo').value,
+            asunto: document.getElementById('subject').value,
+            mensaje: document.getElementById('message').value,
+            enviado_desde: "Portfolio Web",
+            fecha: new Date().toLocaleString()
+        };
+
+        // Tu URL de n8n (He codificado el espacio como %20)
+        const webhookURL = "https://n8n-n8n.qgofek.easypanel.host/webhook/Contacto Portfolio";
+
+        try {
+            const response = await fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert("¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.");
+                contactForm.reset();
+                toggleModal();
+            } else {
+                throw new Error("Error en el servidor");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Vaya, parece que algo ha fallado. Por favor, inténtalo de nuevo o escríbeme directamente a juanmtb9@gmail.com");
+        } finally {
+            // Restaurar botón
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
+        }
     });
 </script>
 
+
 </body>
 </html>
+
